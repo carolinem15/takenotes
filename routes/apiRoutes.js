@@ -9,28 +9,65 @@ var notes = require("../db/db.json");
 
 module.exports = function(app) {
     // API GET Requests
-    app.get("/api/notes", function(req, res) {
-      // this code shows the json note data
-      res.json(notes);
-      //read db.json file
-      fs.readFile('db.json', function(error, data){
-      // i am trying to return all saved notes as json here
-        return res.send();
-        // return res.json()
-      })
-    });
+
+    // attempt #1
+
+    // app.get("/api/notes", function(req, res) {
+    //   // this code shows the json note data
+    //   res.json(notes);
+    //   //read db.json file
+    //   fs.readFile('db.json', function(error, data){
+    //   // i am trying to return all saved notes as json here
+    //     return res.send(data);
+    //     // return res.json()
+    //   })
+    // });
+
+    // attempt #2
+    // Displays notes, or returns error
+  app.get("/api/notes", function(req, res) {
+    var storedNotes = req.body;
+    console.log(storedNotes);
+
+    for (var i = 0; i < notes.length; i++) {
+      if (storedNotes === notes[i].routeName) {
+        return res.json(notes[i]);
+      }
+    }
+    return res.json(error);
+  });
+
+
+    // Displays a single character, or returns false
+app.get("/api/characters/:character", function(req, res) {
+  var chosen = req.params.character;
+
+  console.log(chosen);
+
+  for (var i = 0; i < characters.length; i++) {
+    if (chosen === characters[i].routeName) {
+      return res.json(characters[i]);
+    }
+  }
+
+  return res.json(false);
+});
+
   
-    // API POST Requests
+    // API POST Request
 
     app.post("/api/notes", function(req, res) {
       // receive new note and save on req.body
-      notes.push(req.body)
+      var newNote = req.body;
+      console.log(newNote);
       // add to db.json file
+      notes.push(newNote);
       // return new note to client
-      fs.writeFile('db.json', req.body, function(error){
-        if (error) throw error;
-        console.log("Added!")
-    })
+      res.json(newNote);
+
+      // fs.writeFile('db.json', req.body, function(error){
+      //   if (error) throw error;
+      //   console.log("Added!")
     });
 
     // API DELETE Requests
