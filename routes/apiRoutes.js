@@ -3,21 +3,21 @@
 const fs = require('fs')
 
 // linking "data source" to db.json
-var notes = require("./db/db.json");
+var notes = require("../db/db.json");
 
 // Routing
 
 module.exports = function(app) {
     // API GET Requests
     app.get("/api/notes", function(req, res) {
-    // this code shows the json note data
+      // this code shows the json note data
       res.json(notes);
       //read db.json file
-        fs.readFile('db.json', function(error, data){
-            // i am trying to return all saved notes as json here
-            return res.send();
-            // return res.json()
-        })
+      fs.readFile('db.json', function(error, data){
+      // i am trying to return all saved notes as json here
+        return res.send();
+        // return res.json()
+      })
     });
   
     // API POST Requests
@@ -34,6 +34,14 @@ module.exports = function(app) {
     });
 
     // API DELETE Requests
-    
+
+    app.delete("/api/notes/:id", function(req, res) {
+      // read all notes from db.json
+
+      // remove note with given id property
+
+      // rewrite notes to db.json file
+    })
+
   };
   
