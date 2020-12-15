@@ -8,7 +8,7 @@ var notes = require("../db/db.json");
 // Routing
 
 module.exports = function(app) {
-    // API GET Requests
+    // API GET Request
 
     // attempt #1
 
@@ -31,28 +31,12 @@ module.exports = function(app) {
 
     for (var i = 0; i < notes.length; i++) {
       if (storedNotes === notes[i].routeName) {
+        // converts notes to json
         return res.json(notes[i]);
       }
     }
     return res.json(error);
   });
-
-
-    // Displays a single character, or returns false
-app.get("/api/characters/:character", function(req, res) {
-  var chosen = req.params.character;
-
-  console.log(chosen);
-
-  for (var i = 0; i < characters.length; i++) {
-    if (chosen === characters[i].routeName) {
-      return res.json(characters[i]);
-    }
-  }
-
-  return res.json(false);
-});
-
   
     // API POST Request
 
@@ -74,7 +58,21 @@ app.get("/api/characters/:character", function(req, res) {
 
     app.delete("/api/notes/:id", function(req, res) {
       // read all notes from db.json
+      var allNotes = req.body
 
+      // i think i should use a for in loop to iterate through each
+      // property in the req.body object, then somehow give each note 
+      // a unique id
+
+      // var txt = "";
+      // var x;
+      // for (x in allNotes) {
+      // txt += allNotes[x] +;
+      // }
+
+      // for (const note in allNotes) {
+      //   console.log(`obj.${prop} = ${obj[prop]}`);
+      // }
       // remove note with given id property
 
       // rewrite notes to db.json file
