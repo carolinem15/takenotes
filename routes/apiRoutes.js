@@ -28,7 +28,6 @@ module.exports = function(app) {
       // return new note to client
       console.log(notes);
       res.json(newNote);
-      
       fs.writeFile('db/db.json', JSON.stringify(notes), function(error){
         if (error) throw error;
         console.log("Added!");
@@ -41,15 +40,14 @@ module.exports = function(app) {
       // read all notes from db.json
       console.log(req.params);
       // used .filter() to select out a note with a specific id
-      let editedNotes = notes.filter(note => note.id != req.params.id);
-      console.log(editedNotes);
-      res.json(editedNotes);
+      notes = notes.filter(note => note.id != req.params.id);
+      console.log(notes);
+      res.json(notes);
       // rewrite notes to db.json file
-      fs.writeFile('db/db.json', JSON.stringify(editedNotes), function(error){
+      fs.writeFile('db/db.json', JSON.stringify(notes), function(error){
         if (error) throw error;
         console.log("Deleted!");
       });
-      res.json(editedNotes);
     });
 
   };
