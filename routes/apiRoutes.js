@@ -47,8 +47,9 @@ module.exports = function(app) {
       // rewrite notes to db.json file
       fs.writeFile('db/db.json', JSON.stringify(editedNotes), function(error){
         if (error) throw error;
-        console.log("Added!");
+        console.log("Deleted!");
       });
+      res.json(editedNotes);
     });
 
   };
