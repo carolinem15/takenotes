@@ -1,6 +1,7 @@
 // Dependencies
 
 const fs = require('fs')
+const { v4: uuidv4 } = require('uuid');
 
 // linking "data source" to db.json
 var notes = require("../db/db.json");
@@ -10,73 +11,45 @@ var notes = require("../db/db.json");
 module.exports = function(app) {
     // API GET Request
 
-    // attempt #1
+    app.get("/api/notes", function(req, res) {
+      // this code shows the json note data
+      res.json(notes);
+    });
 
-    // app.get("/api/notes", function(req, res) {
-    //   // this code shows the json note data
-    //   res.json(notes);
-    //   //read db.json file
-    //   fs.readFile('db.json', function(error, data){
-    //   // i am trying to return all saved notes as json here
-    //     return res.send(data);
-    //     // return res.json()
-    //   })
-    // });
-
-    // attempt #2
-    // Displays notes, or returns error
-  app.get("/api/notes", function(req, res) {
-    var storedNotes = req.body;
-    console.log(storedNotes);
-
-    for (var i = 0; i < notes.length; i++) {
-      if (storedNotes === notes[i].routeName) {
-        // converts notes to json
-        return res.json(notes[i]);
-      }
-    }
-    return res.json(error);
-  });
-  
     // API POST Request
 
     app.post("/api/notes", function(req, res) {
       // receive new note and save on req.body
       var newNote = req.body;
-      console.log(newNote);
+      // added unique identifier npm package 
+      newNote.id = uuidv4(); 
       // add to db.json file
       notes.push(newNote);
       // return new note to client
+      console.log(notes);
       res.json(newNote);
-
-      // fs.writeFile('db.json', req.body, function(error){
-      //   if (error) throw error;
-      //   console.log("Added!")
+      
+      fs.writeFile('db/db.json', JSON.stringify(notes), function(error){
+        if (error) throw error;
+        console.log("Added!");
+      });
     });
 
     // API DELETE Requests
 
     app.delete("/api/notes/:id", function(req, res) {
       // read all notes from db.json
-      var allNotes = req.body
-
-      // i think i should use a for in loop to iterate through each
-      // property in the req.body object, then somehow give each note 
-      // a unique id
-
-      // var txt = "";
-      // var x;
-      // for (x in allNotes) {
-      // txt += allNotes[x] +;
-      // }
-
-      // for (const note in allNotes) {
-      //   console.log(`obj.${prop} = ${obj[prop]}`);
-      // }
-      // remove note with given id property
-
+      console.log(req.params);
+      // used .filter() to select out a note with a specific id
+      let editedNotes = notes.filter(note => note.id != req.params.id);
+      console.log(editedNotes);
+      res.json(editedNotes);
       // rewrite notes to db.json file
-    })
+      fs.writeFile('db/db.json', JSON.stringify(editedNotes), function(error){
+        if (error) throw error;
+        console.log("Added!");
+      });
+    });
 
   };
   
