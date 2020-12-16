@@ -8,11 +8,11 @@ Take Notes is an application using Express.js that allows you to input notes, an
 
 ## Installation
 
-
+Navigate to the Heroku app. 
 
 ## Usage
 
-
+Select "Get Started" from the homepage and click on the note input fields to enter your note. If you would like to edit the note, click the pencil icon. If you would like to save the note, click the disc icon. If you would like to delete the note, click the red trash can icon.
 
 ## Tests
 
